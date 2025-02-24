@@ -1,6 +1,6 @@
 package com.bbomanso.em.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -12,11 +12,12 @@ public class EmployeeDto {
 
     private Long id;
 
-    @JsonProperty(value = "first_name")
+    @NotBlank(message = "First name is required")
     private String firstName;
 
-    @JsonProperty(value = "last_name")
+    @NotBlank(message = "Last name is required")
     private String lastName;
 
+    @NotBlank(message = "Email is required")
     private String email;
 }

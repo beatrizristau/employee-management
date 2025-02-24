@@ -21,6 +21,10 @@ function ListEmployeeComponents() {
         navigate('/employees/add')
     }
 
+    function updateEmployee(id) {
+        navigate(`/employees/update/${id}`)
+    }
+
     return (
         <div className='container'>
             <h2 className='text-center'>List of Employees</h2>
@@ -32,6 +36,7 @@ function ListEmployeeComponents() {
                         <th>Employee First Name</th>
                         <th>Employee Last Name</th>
                         <th>Employee Email Id</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +48,9 @@ function ListEmployeeComponents() {
                                 <td>{employee.firstName}</td>
                                 <td>{employee.lastName}</td>
                                 <td>{employee.email}</td>
+                                <td>
+                                    <button className='btn btn-info' onClick={() => updateEmployee(employee.id)}>Update</button>
+                                </td>
                             </tr>
                         )
                     }

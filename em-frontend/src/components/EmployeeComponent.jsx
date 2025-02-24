@@ -7,21 +7,63 @@ function EmployeeComponent() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
+    const [firstNameClass, setFirstNameClass] = useState('form-control')
+    const [lastNameClass, setLastNameClass] = useState('form-control')
+    const [emailClass, setEmailClass] = useState('form-control')
+    
+    // initialize the state variable to hold the validation error messages
+    const [errors, setErrors] = useState({
+        firstName: '',
+        lastName: '',
+        email: ''
+    });
 
     const navigate = useNavigate();
 
     function saveEmployee(event) {
         event.preventDefault();
-        const employee = {firstName, lastName, email}
-        console.log(employee);
 
-        createEmployee(employee).then((response) => {
-            console.log(response.data);
-            navigate('/employees');
+        if (validateForm()) {
+            const employee = {firstName, lastName, email}
+            console.log(employee);
+
+            createEmployee(employee).then((response) => {
+                console.log(response.data);
+                navigate('/employees');
+            })
         }
-        ).catch((error) => {
-            console.error(error)
-        })
+    }
+    
+    function validateForm() {
+        let valid = true;
+        const errorsCopy = { ...errors };
+        const classNames = {};
+    
+        // Define the fields to validate
+        const fields = [
+            { name: 'firstName', value: firstName },
+            { name: 'lastName', value: lastName },
+            { name: 'email', value: email },
+        ];
+    
+        // Validate each field and update the errors and classNames objects
+        fields.forEach(({ name, value }) => {
+            if (value.trim()) {
+                errorsCopy[name] = '';
+                classNames[name] = 'form-control is-valid';
+            } else {
+                errorsCopy[name] = 'Field is required';
+                classNames[name] = 'form-control is-invalid';
+                valid = false;
+            }
+        });
+    
+        setErrors(errorsCopy);
+        setFirstNameClass(classNames.firstName);
+        setLastNameClass(classNames.lastName);
+        setEmailClass(classNames.email);
+    
+        return valid;
     }
 
     return (
@@ -32,6 +74,7 @@ function EmployeeComponent() {
                     <h2 className="text-center">Add Employee</h2>
                     <div className="card-body">
                         <form>
+                            {/* Add First Name Field */}
                             <div className="form-group mb-2">
                                 <label className="form-label">First Name:</label>
                                 <input 
@@ -39,11 +82,15 @@ function EmployeeComponent() {
                                     placeholder='Enter First Name'
                                     name='firstName'
                                     value={firstName}
-                                    className='form-control'
+                                    className={firstNameClass}
                                     onChange={(event) => setFirstName(event.target.value)}
                                 >
                                 </input>
+                                {/* Display the error message */}
+                                {errors.firstName && <div className='invalid-feedback'>{errors.firstName}</div>}
                             </div>
+
+                            {/* Add Last Name Field */}
                             <div className="form-group mb-2">
                                 <label className="form-label">Last Name:</label>
                                 <input 
@@ -51,11 +98,15 @@ function EmployeeComponent() {
                                     placeholder='Enter Last Name'
                                     name='lastName'
                                     value={lastName}
-                                    className='form-control'
+                                    className={lastNameClass}
                                     onChange={(event) => setLastName(event.target.value)}
                                 >
                                 </input>
+                                {/* Display the error message */}
+                                {errors.lastName && <div className='invalid-feedback'>{errors.lastName}</div>}
                             </div>
+
+                            {/* Add Email Field */}
                             <div className="form-group mb-2">
                                 <label className="form-label">Email:</label>
                                 <input 
@@ -63,12 +114,15 @@ function EmployeeComponent() {
                                     placeholder='Enter Email'
                                     name='email'
                                     value={email}
-                                    className='form-control'
+                                    className={emailClass}
                                     onChange={(event) => setEmail(event.target.value)}
                                 >
                                 </input>
+                                {/* Display the error message */}
+                                {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
                             </div>
 
+                            {/* Submit New Employee Button */}
                             <button className='btn btn-success' onClick={saveEmployee}>Submit</button>
                         </form>
                     </div>

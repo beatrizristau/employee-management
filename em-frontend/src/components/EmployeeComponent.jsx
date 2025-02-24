@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { createEmployee } from '../services/EmployeeService'
+import { createEmployee, getEmployee, updateEmployee } from '../services/EmployeeService'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 
@@ -12,6 +12,22 @@ function EmployeeComponent() {
     const [lastNameClass, setLastNameClass] = useState('form-control')
     const [emailClass, setEmailClass] = useState('form-control')
     const { id } = useParams(); // params hook fetches the id from the URL
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // if the id is present in the URL, then fetch the employee details
+        if (id) {
+            // fetch the employee details from the server
+            // and update the state variables
+            getEmployee(id).then((response) => {
+                setFirstName(response.data.firstName);
+                setLastName(response.data.lastName);
+                setEmail(response.data.email);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+    }, [id]);
     
     // initialize the state variable to hold the validation error messages
     const [errors, setErrors] = useState({
@@ -20,19 +36,31 @@ function EmployeeComponent() {
         email: ''
     });
 
-    const navigate = useNavigate();
-
-    function saveEmployee(event) {
+    function saveOrUpdateEmployee(event) {
         event.preventDefault();
 
         if (validateForm()) {
-            const employee = {firstName, lastName, email}
-            console.log(employee);
+            if (id) {
+                const employee = {firstName, lastName, email}
+                console.log(employee);
 
-            createEmployee(employee).then((response) => {
-                console.log(response.data);
-                navigate('/employees');
-            })
+                updateEmployee(id, employee).then((response) => {
+                    console.log(response.data);
+                    navigate('/employees');
+                }).catch((error) => {
+                    console.error(error);
+                });
+            } else {
+                const employee = {firstName, lastName, email}
+                console.log(employee);
+    
+                createEmployee(employee).then((response) => {
+                    console.log(response.data);
+                    navigate('/employees');
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
         }
     }
     
@@ -132,7 +160,7 @@ function EmployeeComponent() {
                             </div>
 
                             {/* Submit New Employee Button */}
-                            <button className='btn btn-success' onClick={saveEmployee}>Submit</button>
+                            <button className='btn btn-success' onClick={saveOrUpdateEmployee}>Submit</button>
                         </form>
                     </div>
                 </div>

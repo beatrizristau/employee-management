@@ -13,3 +13,15 @@ export const createEmployee = (employee) => axios.post(
         }
     }
 );
+
+export const updateEmployee = (id, employee) => axios.put(
+    REST_API_BASE_URL + "/update/" + id,
+    employee,
+    {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+);
+
+export const getEmployee = (id) => axios.get(REST_API_BASE_URL + "/" + id);

@@ -8,16 +8,18 @@ function ListEmployeeComponents() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        // it is called twice, once when the component is rendered and once when the component is updated
+        // In production, it is called only once
         getAllEmployees();
-    }
-    , [])
+    }, []);
 
     function getAllEmployees() {
-        listEmployees().then((response) => {
-            setEmployees(response.data)
+        listEmployees()
+            .then((response) => {
+                setEmployees(response.data);
         }).catch((error) => {
-            console.error(error)
-        })
+            console.error(error);
+        });
     }
 
     /* in order to navigate user from one page to another page, we need to use the useNavigate hook from react-router-dom */

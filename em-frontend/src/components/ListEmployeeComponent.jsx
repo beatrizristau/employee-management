@@ -40,8 +40,8 @@ function ListEmployeeComponents() {
                             employee =>
                             <tr key = {employee.id}>
                                 <td>{employee.id}</td>
-                                <td>{employee.first_name}</td>
-                                <td>{employee.last_name}</td>
+                                <td>{employee.firstName}</td>
+                                <td>{employee.lastName}</td>
                                 <td>{employee.email}</td>
                             </tr>
                         )

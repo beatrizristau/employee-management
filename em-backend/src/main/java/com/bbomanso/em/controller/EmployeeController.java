@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/employees")
@@ -26,10 +25,10 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/{employeeId}", produces = "application/json")
-    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long employeeId) {
-        log.info("Request arrived to GET employee by id: {}", employeeId);
-        EmployeeDto response = employeeService.getEmployeeById(employeeId);
+    @GetMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long id) {
+        log.info("Request arrived to GET employee by id: {}", id);
+        EmployeeDto response = employeeService.getEmployeeById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -40,17 +39,17 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/{employee_id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("employee_id") Long employeeId, @RequestBody EmployeeDto request) {
-        log.info("Request arrived to UPDATE employee by id: {}", employeeId);
-        EmployeeDto response = employeeService.updateEmployee(employeeId, request);
+    @PutMapping(path = "/update/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDto request) {
+        log.info("Request arrived to UPDATE employee by id: {}", id);
+        EmployeeDto response = employeeService.updateEmployee(id, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/{employee_id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable("employee_id") Long employeeId) {
-        log.info("Request arrived to DELETE employee by id: {}", employeeId);
-        employeeService.deleteEmployee(employeeId);
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+        log.info("Request arrived to DELETE employee by id: {}", id);
+        employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,11 +1,14 @@
 package com.bbomanso.em.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Table
 @Entity(name = "employees")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employee {
 
     @Id

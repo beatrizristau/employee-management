@@ -14,6 +14,7 @@ function EmployeeComponent() {
     const { id } = useParams(); // params hook fetches the id from the URL
     const navigate = useNavigate();
 
+    // self-triggered after the component is rendered
     useEffect(() => {
         // if the id is present in the URL, then fetch the employee details
         if (id) {

@@ -22,6 +22,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto request) {
         log.info("Request arrived to CREATE employee: {}", request);
         EmployeeDto response = employeeService.createEmployee(request);
+        log.info("Created employee with id: {}", response.getId());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

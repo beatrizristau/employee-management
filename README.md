@@ -15,3 +15,7 @@ Simple Employee Management Application
 - JavaScript
 - NPM
 - Axios
+
+## Run Application
+- **React Application -->** ``` npm run dev ```
+- **Spring Boot Application -->** ``` mvn spring-boot:run ```

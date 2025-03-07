@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { use, useEffect } from 'react'
 import { useState } from 'react'
 import { createEmployee, getEmployee, updateEmployee } from '../services/EmployeeService'
+import { listDepartments } from '../services/DepartmentService'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 
@@ -8,11 +9,26 @@ function EmployeeComponent() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
+    const [departmentId, setDepartmentId] = useState('')
+    const [departments, setDepartments] = useState([])
+
     const [firstNameClass, setFirstNameClass] = useState('form-control')
     const [lastNameClass, setLastNameClass] = useState('form-control')
     const [emailClass, setEmailClass] = useState('form-control')
+    const [departmentClass, setDepartmentClass] = useState('form-control')
+
     const { id } = useParams(); // params hook fetches the id from the URL
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // fetch the list of departments from the server
+        // and update the state variable
+        listDepartments().then((response) => {
+            setDepartments(response.data);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }, []);
 
     // self-triggered after the component is rendered
     useEffect(() => {
@@ -24,6 +40,7 @@ function EmployeeComponent() {
                 setFirstName(response.data.firstName);
                 setLastName(response.data.lastName);
                 setEmail(response.data.email);
+                setDepartmentId(response.data.departmentId);
             }).catch((error) => {
                 console.error(error);
             });
@@ -34,17 +51,18 @@ function EmployeeComponent() {
     const [errors, setErrors] = useState({
         firstName: '',
         lastName: '',
-        email: ''
+        email: '',
+        department: ''
     });
 
     function saveOrUpdateEmployee(event) {
         event.preventDefault();
 
         if (validateForm()) {
-            if (id) {
-                const employee = {firstName, lastName, email}
-                console.log(employee);
+            const employee = {firstName, lastName, email, departmentId}
+            console.log(employee);
 
+            if (id) {
                 updateEmployee(id, employee).then((response) => {
                     console.log(response.data);
                     navigate('/employees');
@@ -52,9 +70,6 @@ function EmployeeComponent() {
                     console.error(error);
                 });
             } else {
-                const employee = {firstName, lastName, email}
-                console.log(employee);
-    
                 createEmployee(employee).then((response) => {
                     console.log(response.data);
                     navigate('/employees');
@@ -75,11 +90,12 @@ function EmployeeComponent() {
             { name: 'firstName', value: firstName },
             { name: 'lastName', value: lastName },
             { name: 'email', value: email },
+            { name: 'department', value: departmentId }
         ];
     
         // Validate each field and update the errors and classNames objects
         fields.forEach(({ name, value }) => {
-            if (value.trim()) {
+            if (value.trim() && (name !== 'department' || value !== 'Select Department')) {
                 errorsCopy[name] = '';
                 classNames[name] = 'form-control is-valid';
             } else {
@@ -93,6 +109,7 @@ function EmployeeComponent() {
         setFirstNameClass(classNames.firstName);
         setLastNameClass(classNames.lastName);
         setEmailClass(classNames.email);
+        setDepartmentClass(classNames.department);
     
         return valid;
     }
@@ -158,6 +175,27 @@ function EmployeeComponent() {
                                 </input>
                                 {/* Display the error message */}
                                 {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
+                            </div>
+
+                            {/* Add Department */}
+                            <div className="form-group mb-2">
+                                <label className="form-label">Select Department:</label>
+                                <select
+                                    className={departmentClass}
+                                    value={departmentId}
+                                    onChange={(event) => setDepartmentId(event.target.value)}
+                                >
+                                    <option value=''>Select Department</option>
+                                    {
+                                        departments.map(
+                                            department =>
+                                                <option key={department.id} value={department.id}>{department.departmentName}</option>
+                                        )
+                                    }
+                                </select>
+
+                                {/* Display the error message */}
+                                {errors.department && <div className='invalid-feedback'>{errors.department}</div>}
                             </div>
 
                             {/* Submit New Employee Button */}

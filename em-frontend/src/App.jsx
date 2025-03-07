@@ -3,6 +3,8 @@ import EmployeeComponent from './components/EmployeeComponent'
 import FooterComponent from './components/FooterComponent'
 import HeaderComponent from './components/HeaderComponent'
 import ListEmployeeComponent from './components/ListEmployeeComponent'
+import ListDepartmentComponent from './components/ListDepartmentComponent'
+import DepartmentComponent from './components/DepartmentComponent'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -21,6 +23,15 @@ function App() {
 
           {/* http://localhost:3000/employees/update/{id} */}
           <Route path='/employees/update/:id' element = { <EmployeeComponent /> }></Route>
+
+          {/* http://localhost:3000/departments */}
+          <Route path='/departments' element = { <ListDepartmentComponent /> }></Route>
+
+          {/* http://localhost:3000/departments/add */}
+          <Route path='/departments/add' element = { <DepartmentComponent /> }></Route>
+
+          {/* http://localhost:3000/departments/update/{id} */}
+          <Route path='/departments/update/:id' element = { <DepartmentComponent /> }></Route>
         </Routes>
         
         <FooterComponent />

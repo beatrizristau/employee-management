@@ -19,3 +19,9 @@ Simple Employee Management Application
 ## Run Application
 - **React Application -->** ``` npm run dev ```
 - **Spring Boot Application -->** ``` mvn spring-boot:run ```
+
+## Spring Boot Security
+- GET: Admin, User
+- ADD: Admin, User
+- UPDATE: Amin
+- DELETE: Admin

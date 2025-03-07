@@ -79,7 +79,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void deleteDepartmentById(Long id) {
         /* find the department by id */
         Department department = departmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Department not found with id: " + id));
+                .orElseThrow(() -> {
+                    log.error("Department not found with id: {}", id);
+                    return new ResourceNotFoundException("Department not found with id: " + id);
+                });
         log.info("Found Department entity with id: {}", id);
 
         /* delete the department entity from the database */

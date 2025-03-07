@@ -1,9 +1,12 @@
 package com.bbomanso.em.service.impl;
 
 import com.bbomanso.em.dto.EmployeeDto;
+import com.bbomanso.em.entity.Department;
 import com.bbomanso.em.entity.Employee;
 import com.bbomanso.em.exception.ResourceNotFoundException;
+import com.bbomanso.em.repository.DepartmentRepository;
 import com.bbomanso.em.repository.EmployeeRepository;
+import com.bbomanso.em.service.DepartmentService;
 import com.bbomanso.em.service.EmployeeService;
 import com.bbomanso.em.utils.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +21,18 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Override
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
         /* convert EmployeeDto to Employee entity */
         Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
         log.info("Converted EmployeeDto to Employee entity.");
+
+        /* find the department by id */
+        Department department = departmentRepository.findById(employeeDto.getDepartmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with id: " + employeeDto.getDepartmentId()));
+        employee.setDepartment(department);
 
         /* save the employee entity to the database */
         Employee savedEmployee = employeeRepository.save(employee);
@@ -67,6 +76,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setLastName(employeeDto.getLastName());
         employee.setEmail(employeeDto.getEmail());
         log.info("Updated Employee entity with new values.");
+
+        /* find the department by id */
+        Department department = departmentRepository.findById(employeeDto.getDepartmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with id: " + employeeDto.getDepartmentId()));
+        employee.setDepartment(department);
 
         /* save the updated employee entity to the database */
         Employee updatedEmployee = employeeRepository.save(employee);

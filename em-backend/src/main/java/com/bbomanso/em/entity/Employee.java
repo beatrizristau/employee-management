@@ -23,4 +23,10 @@ public class Employee {
 
     @Column(name = "email_id", columnDefinition = "varchar(100)", nullable = false, unique = true)
     private String email;
+
+    // FetchType.LAZY is used to avoid loading the department entity when an employee is fetched
+    // JoinColumn - specifies the column name in the employees table that is used to join with the department table
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    private Department department;
 }

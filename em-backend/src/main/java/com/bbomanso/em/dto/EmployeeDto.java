@@ -20,4 +20,6 @@ public class EmployeeDto {
 
     @NotBlank(message = "Email is required")
     private String email;
+
+    private Long departmentId;
 }

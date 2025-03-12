@@ -4,6 +4,7 @@ Simple Employee Management Application
 ## Tech Stack
 - Spring Boot
 - Spring Data JPA
+- Spring Security
 - PostgreSQL
 - IntelliJ IDEA
 - Visual Studio Code IDE

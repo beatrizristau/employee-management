@@ -16,9 +16,23 @@ Simple Employee Management Application
 - NPM
 - Axios
 
-## Run Application
-- **React Application -->** ``` npm run dev ```
-- **Spring Boot Application -->** ``` mvn spring-boot:run ```
+## Frontend - React
+### Run on local
+```
+npm run dev 
+```
+The application will be available at ```http://localhost:3000```
+
+## Backend - Spring Boot
+### Install
+```
+mvn clean package
+```
+### Run on local
+```
+mvn spring-boot:run
+```
+The application will be available at ```http://localhost:8080```
 
 ## Spring Boot Security
 - GET: Admin, User

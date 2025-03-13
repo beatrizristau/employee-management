@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto request) {
         log.info("Request arrived to CREATE employee: {}", request);
@@ -26,6 +28,7 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long id) {
         log.info("Request arrived to GET employee by id: {}", id);
@@ -33,6 +36,7 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping(path = "", produces = "application/json")
     public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
         log.info("Request arrived to GET all employees");
@@ -40,6 +44,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/update/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDto request) {
         log.info("Request arrived to UPDATE employee by id: {}", id);
@@ -47,6 +52,7 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         log.info("Request arrived to DELETE employee by id: {}", id);

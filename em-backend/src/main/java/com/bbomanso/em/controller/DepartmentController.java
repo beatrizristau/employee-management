@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
     public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentDto request) {
         log.info("Received request to CREATE a department: {}", request);
@@ -26,6 +28,7 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDepartment);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable Long id) {
         log.info("Received request to GET department by id: {}", id);
@@ -33,6 +36,7 @@ public class DepartmentController {
         return ResponseEntity.ok(department);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping(path = "", produces = "application/json")
     public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
         log.info("Received request to GET all departments");
@@ -40,6 +44,7 @@ public class DepartmentController {
         return ResponseEntity.ok(departments);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/update/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable Long id, @RequestBody DepartmentDto request) {
         log.info("Received request to UPDATE department with id: {}", id);
@@ -48,6 +53,7 @@ public class DepartmentController {
         return ResponseEntity.ok(updatedDepartment);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         log.info("Received request to DELETE department with id: {}", id);

@@ -78,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         log.info("Updated Employee entity with new values.");
 
         /* find the department by id */
-        Department department = departmentRepository.findById(employeeDto.getDepartmentId())
+        Department department = departmentRepository.findById(employee.getDepartment().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with id: " + employeeDto.getDepartmentId()));
         employee.setDepartment(department);
 

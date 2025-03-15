@@ -1,5 +1,6 @@
 package com.bbomanso.em.controller;
 
+import com.bbomanso.em.dto.LoginDto;
 import com.bbomanso.em.dto.RegisterDto;
 import com.bbomanso.em.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,13 @@ public class AuthController {
         String response = authService.register(registerDto);
         log.info("User registered!");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/login", consumes = "application/json")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+        log.info("Logging in user: {}", loginDto);
+        String response = authService.login(loginDto);
+        log.info("User logged in!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.bbomanso.em.controller;
 
+import com.bbomanso.em.dto.JwtAuthResponse;
 import com.bbomanso.em.dto.LoginDto;
 import com.bbomanso.em.dto.RegisterDto;
 import com.bbomanso.em.service.AuthService;
@@ -29,9 +30,13 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login", consumes = "application/json")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto) {
         log.info("Logging in user: {}", loginDto);
-        String response = authService.login(loginDto);
+        String token = authService.login(loginDto);
+
+        JwtAuthResponse response = new JwtAuthResponse();
+        response.setAccessToken(token);
+
         log.info("User logged in!");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -7,6 +7,7 @@ import com.bbomanso.em.entity.User;
 import com.bbomanso.em.exception.EmployeeManagementAPIException;
 import com.bbomanso.em.repository.RoleRepository;
 import com.bbomanso.em.repository.UserRepository;
+import com.bbomanso.em.security.JwtTokenProvider;
 import com.bbomanso.em.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public String register(RegisterDto registerDto) {
@@ -71,6 +73,6 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User logged in successfully!";
+        return jwtTokenProvider.generateToken(authentication);
     }
 }

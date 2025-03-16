@@ -1,5 +1,6 @@
 package com.bbomanso.em.service.impl;
 
+import com.bbomanso.em.dto.JwtAuthResponse;
 import com.bbomanso.em.dto.LoginDto;
 import com.bbomanso.em.dto.RegisterDto;
 import com.bbomanso.em.entity.Role;
@@ -65,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(LoginDto loginDto) {
+    public JwtAuthResponse login(LoginDto loginDto) {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()
@@ -73,6 +74,18 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return jwtTokenProvider.generateToken(authentication);
+        String role = userRepository.findByUsernameOrEmail(loginDto.getUsernameOrEmail(), loginDto.getUsernameOrEmail())
+                .orElseThrow(() -> new EmployeeManagementAPIException(HttpStatus.BAD_REQUEST, "User not found"))
+                .getRoles()
+                .stream()
+                .findFirst()
+                .map(Role::getName)
+                .get();
+
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setAccessToken(jwtTokenProvider.generateToken(authentication));
+        jwtAuthResponse.setRole(role);
+
+        return jwtAuthResponse;
     }
 }

@@ -32,10 +32,7 @@ public class AuthController {
     @PostMapping(value = "/login", consumes = "application/json")
     public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto) {
         log.info("Logging in user: {}", loginDto);
-        String token = authService.login(loginDto);
-
-        JwtAuthResponse response = new JwtAuthResponse();
-        response.setAccessToken(token);
+        JwtAuthResponse response = authService.login(loginDto);
 
         log.info("User logged in!");
         return new ResponseEntity<>(response, HttpStatus.OK);

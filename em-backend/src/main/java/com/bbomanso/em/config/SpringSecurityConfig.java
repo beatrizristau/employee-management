@@ -20,6 +20,9 @@ public class SpringSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // cors configuration
+        http.cors(Customizer.withDefaults());
+        // csrf configuration
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/api/v1/auth/**").permitAll();

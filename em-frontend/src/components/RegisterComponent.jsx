@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { register } from '../services/AuthService';
 
 function RegisterComponent() {
     const [name, setName] = useState('');
@@ -10,10 +11,15 @@ function RegisterComponent() {
     function handleRegistrationForm(event) {
         event.preventDefault();
 
-        const register = [name, username, email, password];
-        console.log(register);
+        const registerRequest = {name, username, email, password};
+        console.log(registerRequest);
 
-        
+        register(registerRequest).then(response => {
+            console.log(response.data);
+        }
+        ).catch(error => {
+            console.log(error); 
+        });
     }
 
     return (

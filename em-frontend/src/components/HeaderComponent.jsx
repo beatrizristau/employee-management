@@ -18,6 +18,11 @@ function HeaderComponent() {
                         </li>
                     </ul>
                 </div>
+                <ul className='navbar-nav'>
+                    <li className='nav-item'>
+                      <NavLink className='nav-link' to='/register'>Register</NavLink>
+                    </li>
+                </ul>
             </nav>
         </header>
     </div>

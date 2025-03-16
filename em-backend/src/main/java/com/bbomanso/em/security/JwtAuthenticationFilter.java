@@ -17,6 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/* Execute before executing Spring Security Filter.
+* Validate the JWT token and provides user details to Spring Security for Authentication */
 @Slf4j
 @Component
 @RequiredArgsConstructor

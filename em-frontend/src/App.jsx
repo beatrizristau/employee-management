@@ -7,6 +7,7 @@ import ListDepartmentComponent from './components/ListDepartmentComponent'
 import DepartmentComponent from './components/DepartmentComponent'
 import RegisterComponent from './components/RegisterComponent'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import LoginComponent from './components/LoginComponent'
 
 function App() {
 
@@ -33,8 +34,11 @@ function App() {
             {/* http://localhost:3000/departments/update/{id} */}
             <Route path='/departments/update/:id' element = { <DepartmentComponent /> }></Route>
 
-            {/* http://localhost:3000/register*/}
+            {/* http://localhost:3000/register */}
             <Route path='/register' element = { <RegisterComponent /> }></Route>
+
+            {/* http://localhost:3000/login */}
+            <Route path='/login' element = { <LoginComponent /> }></Route>
           </Routes>
         <FooterComponent />
       </BrowserRouter>

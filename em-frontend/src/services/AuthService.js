@@ -11,3 +11,13 @@ export const register = (user) => axios.post(
         }
     }
 );
+
+export const login = (user) => axios.post(
+    REST_API_BASE_URL + "/login",
+    user,
+    {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+);

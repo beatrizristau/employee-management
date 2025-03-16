@@ -17,8 +17,8 @@ function LoginComponent() {
         await login(loginRequest).then(response => {
             console.log(response.data);
 
-            // create basic token
-            const token = 'Basic ' + window.btoa(username + ':' + password);
+            // create jwt token
+            const token = 'Bearer ' + response.data.accessToken;
 
             // store token in local storage
             storeToken(token);

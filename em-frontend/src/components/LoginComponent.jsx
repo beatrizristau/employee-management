@@ -17,15 +17,11 @@ function LoginComponent() {
         await login(loginRequest).then(response => {
             console.log(response.data);
 
-            // create jwt token
-            const token = 'Bearer ' + response.data.accessToken;
+            const token = 'Bearer ' + response.data.accessToken; // get token from response
+            storeToken(token); // store token in local storage
 
-            // store token in local storage
-            storeToken(token);
-
-            // save logged in user in session storage
-            saveLoggedInUser(username);
-
+            const role = response.data.role; // get role from response
+            saveLoggedInUser(username, role); // save logged in user in session storage
             navigate('/employees');
 
             // refresh the page

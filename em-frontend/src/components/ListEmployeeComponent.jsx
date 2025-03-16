@@ -3,11 +3,13 @@ import { useState } from 'react'
 import { listEmployees, deleteEmployee } from '../services/EmployeeService'
 import { useNavigate } from 'react-router-dom'
 import { getDepartmentById } from '../services/DepartmentService'
+import { isAdminUser } from '../services/AuthService'
 
 function ListEmployeeComponents() {
-    const [employees, setEmployees] = useState([])
-    const [departments, setDepartments] = useState([])
-    const navigate = useNavigate()
+    const [employees, setEmployees] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const navigate = useNavigate();
+    const isAdmin = isAdminUser();
 
     useEffect(() => {
         // it is called twice, once when the component is rendered and once when the component is updated
@@ -68,7 +70,10 @@ function ListEmployeeComponents() {
     return (
         <div className='container'>
             <h2 className='text-center'>List of Employees</h2>
-            <button className='btn btn-primary mb-2' onClick={addNewEmployee}>Add Employee</button>
+            {
+                isAdmin && 
+                <button className='btn btn-primary mb-2' onClick={addNewEmployee}>Add Employee</button>
+            }
             <table className='table table-striped table-bordered'>
                 <thead>
                     <tr>
@@ -77,7 +82,10 @@ function ListEmployeeComponents() {
                         <th>Employee Last Name</th>
                         <th>Employee Email Id</th>
                         <th>Department</th>
-                        <th>Actions</th>
+                        {
+                            isAdmin &&
+                            <th>Actions</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -90,12 +98,15 @@ function ListEmployeeComponents() {
                                 <td>{employee.lastName}</td>
                                 <td>{employee.email}</td>
                                 <td>{departments[employee.departmentId] || "Loading..."}</td>
-                                <td>
-                                    <button className='btn btn-info' onClick={() => updateEmployee(employee.id)}>Update</button>
-                                    <button className='btn btn-danger' onClick={() => removeEmployee(employee.id)}
+                                {
+                                    isAdmin &&
+                                    <td>
+                                        <button className='btn btn-info' onClick={() => updateEmployee(employee.id)}>Update</button>
+                                        <button className='btn btn-danger' onClick={() => removeEmployee(employee.id)}
                                         style={{ marginLeft: '10px' }}
-                                    >Delete</button>
-                                </td>
+                                        >Delete</button>
+                                    </td>
+                                }
                             </tr>
                         )
                     }

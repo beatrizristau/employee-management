@@ -30,9 +30,10 @@ export const getToken = () => {
         .getItem("token");
 };
 
-export const saveLoggedInUser = (username) => {
+export const saveLoggedInUser = (username, role) => {
     // session storage has expiration time
     sessionStorage.setItem("authenticatedUser", username);
+    sessionStorage.setItem("role", role);
 }
 
 export const isUserLoggedIn = () => {
@@ -48,4 +49,9 @@ export const getLoggedInUser = () => {
 export const logout = () => {
     localStorage.clear();
     sessionStorage.clear();
+}
+
+export const isAdminUser = () => {
+    let role = sessionStorage.getItem("role");
+    return role != null && role === "ROLE_ADMIN";
 }

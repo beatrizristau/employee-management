@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { login, storeToken } from '../services/AuthService';
+import { login, saveLoggedInUser, storeToken } from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
 
 function LoginComponent() {
@@ -8,13 +8,13 @@ function LoginComponent() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    function handleLoginForm(event) {
+    async function handleLoginForm(event) {
         event.preventDefault();
 
         const loginRequest = {username, password};
         console.log(loginRequest);
 
-        login(loginRequest).then(response => {
+        await login(loginRequest).then(response => {
             console.log(response.data);
 
             // create basic token
@@ -23,7 +23,13 @@ function LoginComponent() {
             // store token in local storage
             storeToken(token);
 
+            // save logged in user in session storage
+            saveLoggedInUser(username);
+
             navigate('/employees');
+
+            // refresh the page
+            window.location.reload(false);
         }).catch(error => {
             console.log("Some error: " + error); 
         });

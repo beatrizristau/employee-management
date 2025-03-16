@@ -16,6 +16,9 @@ function App() {
       <BrowserRouter>
         <HeaderComponent />
           <Routes>
+            {/* http://localhost:3000/ */}
+            <Route path='/' element = { <LoginComponent /> }></Route>
+
             {/* http://localhost:3000/employees */}
             <Route path='/employees' element = { <ListEmployeeComponent /> }></Route>
 

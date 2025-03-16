@@ -21,3 +21,13 @@ export const login = (user) => axios.post(
         }
     }
 );
+
+export const storeToken = (token) => {
+    localStorage
+        .setItem("token", token);
+};
+
+export const getToken = () => {
+    return localStorage
+        .getItem("token");
+};

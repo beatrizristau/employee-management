@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { login } from '../services/AuthService';
+import { login, storeToken } from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
 
 function LoginComponent() {
@@ -16,11 +16,17 @@ function LoginComponent() {
 
         login(loginRequest).then(response => {
             console.log(response.data);
+
+            // create basic token
+            const token = 'Basic ' + window.btoa(username + ':' + password);
+
+            // store token in local storage
+            storeToken(token);
+
+            navigate('/employees');
         }).catch(error => {
-            console.log(error); 
+            console.log("Some error: " + error); 
         });
-        
-        navigate('/employees');
     }
             
     return (

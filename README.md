@@ -5,6 +5,7 @@ Simple Employee Management Application
 - Spring Boot
 - Spring Data JPA
 - Spring Security
+- JWT
 - PostgreSQL
 - IntelliJ IDEA
 - Visual Studio Code IDE
